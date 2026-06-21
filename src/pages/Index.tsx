@@ -24,6 +24,11 @@ const NEWS = [
   { name: 'Светлана Р.', sum: '100 000 ₽', city: 'Сочи' },
 ];
 
+const RND_NAMES = ['Алексей М.', 'Марина К.', 'Дмитрий В.', 'Ольга С.', 'Игорь П.', 'Светлана Р.', 'Никита Т.', 'Елена Ф.', 'Артём Б.', 'Кристина Л.', 'Роман Д.', 'Анастасия Ж.', 'Владимир Г.', 'Татьяна Н.', 'Максим О.', 'Юлия В.'];
+const RND_CITIES = ['Москва', 'Казань', 'СПб', 'Новосибирск', 'Екатеринбург', 'Сочи', 'Самара', 'Уфа', 'Пермь', 'Ростов', 'Воронеж', 'Тюмень', 'Краснодар', 'Челябинск'];
+const RND_SUMS = ['100 000 ₽', '100 000 ₽', '100 000 ₽', '50 000 ₽', '100 000 ₽'];
+const rnd = (a: string[]) => a[Math.floor(Math.random() * a.length)];
+
 const REVIEWS = [
   { name: 'Анна Воробьёва', text: 'Не верила, но реально пришли деньги! Заплатила комиссию, через час всё было на карте 🙏', stars: 5, avatar: '👩' },
   { name: 'Сергей Кузнецов', text: 'Выиграл 100 000 с третьей попытки. Менеджер Екатерина всё объяснила, помогла с выводом.', stars: 5, avatar: '🧔' },
@@ -107,6 +112,7 @@ const Index = () => {
   const [history, setHistory] = useState<string[]>([]);
   const [showWithdraw, setShowWithdraw] = useState(false);
 
+  const [feed, setFeed] = useState(NEWS.map((n, i) => ({ ...n, id: i })));
   const [chat, setChat] = useState(INITIAL_CHAT);
   const [chatInput, setChatInput] = useState('');
   const chatRef = useRef<HTMLDivElement>(null);
@@ -114,6 +120,16 @@ const Index = () => {
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chat]);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setFeed((f) => [
+        { name: rnd(RND_NAMES), sum: rnd(RND_SUMS), city: rnd(RND_CITIES), id: Date.now() },
+        ...f,
+      ].slice(0, 12));
+    }, 3500);
+    return () => clearInterval(t);
+  }, []);
 
   const spin = () => {
     if (spinning || attempts >= 3 || won) return;
@@ -255,10 +271,11 @@ const Index = () => {
             <div className="mb-3 flex items-center gap-2">
               <Icon name="TrendingUp" size={20} className="text-wb-pink" />
               <span className="text-lg font-extrabold">Лента выводов</span>
+              <span className="ml-auto flex items-center gap-1 text-xs text-green-400"><span className="h-2 w-2 animate-pulse rounded-full bg-green-400" /> в реальном времени</span>
             </div>
             <div className="space-y-2">
-              {NEWS.map((n, i) => (
-                <div key={i} className="flex items-center justify-between rounded-2xl bg-wb-card2 px-4 py-3">
+              {feed.map((n, i) => (
+                <div key={n.id} className={`flex items-center justify-between rounded-2xl bg-wb-card2 px-4 py-3 ${i === 0 ? 'animate-fade-in' : ''}`}>
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full wb-gradient text-sm font-bold">{n.name[0]}</div>
                     <div>
