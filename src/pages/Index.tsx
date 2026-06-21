@@ -335,14 +335,7 @@ const buildMsgStream = (): Array<{ bot: number; text: string; delay: number }> =
 };
 
 // ─── Генерация отзывов ────────────────────────────────────────────────────
-const AVATAR_PHOTOS = [
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/d618b9c2-b186-479c-a4f5-48741445532a.jpg',
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/d2539118-3e01-4f30-892b-bf1b2acc5a85.jpg',
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/cf20c750-2e8c-477b-b7ab-26744da72030.jpg',
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/4676fff4-0405-40ba-9435-0210573c3953.jpg',
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/e1bc4666-b2d2-476a-bd81-4aa2f48f2ddd.jpg',
-  'https://cdn.poehali.dev/projects/e1667a36-6825-49e2-9096-4d5fb3124f4f/files/a5ba5695-e32c-493a-b47e-4fa79c778e8c.jpg',
-];
+const AVATAR_COLORS = ['#FF1FB3','#7B2FF7','#A020F0','#6366f1','#ec4899','#8b5cf6','#f472b6','#818cf8','#c084fc','#a78bfa'];
 
 const REVIEW_NAMES = ['Анна В.','Сергей К.','Юлия М.','Павел Н.','Кристина Л.','Артём Б.',
   'Марина С.','Николай Ф.','Дарья П.','Роман Д.','Светлана О.','Игорь П.',
@@ -380,16 +373,20 @@ const seededRand = (seed: number) => { let s = seed; return () => { s = (s * 930
 
 const generateReviews = (count: number) => {
   const rand = seededRand(42);
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    name: REVIEW_NAMES[Math.floor(rand() * REVIEW_NAMES.length)],
-    city: REVIEW_CITIES[Math.floor(rand() * REVIEW_CITIES.length)],
-    text: REVIEW_TEXTS[Math.floor(rand() * REVIEW_TEXTS.length)],
-    stars: rand() > 0.15 ? 5 : 4,
-    photo: AVATAR_PHOTOS[Math.floor(rand() * AVATAR_PHOTOS.length)],
-    date: `${Math.floor(rand() * 28) + 1} ${['января','февраля','марта','апреля','мая','июня'][Math.floor(rand() * 6)]} 2025`,
-    sum: rand() > 0.1 ? '100 000 ₽' : '50 000 ₽',
-  }));
+  return Array.from({ length: count }, (_, i) => {
+    const name = REVIEW_NAMES[Math.floor(rand() * REVIEW_NAMES.length)];
+    return {
+      id: i,
+      name,
+      initials: name[0],
+      color: AVATAR_COLORS[Math.floor(rand() * AVATAR_COLORS.length)],
+      city: REVIEW_CITIES[Math.floor(rand() * REVIEW_CITIES.length)],
+      text: REVIEW_TEXTS[Math.floor(rand() * REVIEW_TEXTS.length)],
+      stars: rand() > 0.15 ? 5 : 4,
+      date: `${Math.floor(rand() * 28) + 1} ${['января','февраля','марта','апреля','мая','июня'][Math.floor(rand() * 6)]} 2025`,
+      sum: rand() > 0.1 ? '100 000 ₽' : '50 000 ₽',
+    };
+  });
 };
 
 const ALL_REVIEWS = generateReviews(20000);
@@ -742,7 +739,7 @@ const Index = () => {
             {visibleReviews.map(r => (
               <div key={r.id} className="rounded-2xl bg-[#232327] p-4">
                 <div className="mb-2 flex items-center gap-3">
-                  <img src={r.photo} alt={r.name} className="h-11 w-11 shrink-0 rounded-full object-cover" loading="lazy" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-bold text-white" style={{ backgroundColor: r.color }}>{r.initials}</div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1">
                       <span className="text-sm font-bold">{r.name}</span>
