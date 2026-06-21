@@ -24,20 +24,26 @@ const NEWS = [
   { name: 'Светлана Р.', sum: '100 000 ₽', city: 'Сочи' },
 ];
 
-const RND_NAMES = ['Алексей М.', 'Марина К.', 'Дмитрий В.', 'Ольга С.', 'Игорь П.', 'Светлана Р.', 'Никита Т.', 'Елена Ф.', 'Артём Б.', 'Кристина Л.', 'Роман Д.', 'Анастасия Ж.', 'Владимир Г.', 'Татьяна Н.', 'Максим О.', 'Юлия В.'];
-const RND_CITIES = ['Москва', 'Казань', 'СПб', 'Новосибирск', 'Екатеринбург', 'Сочи', 'Самара', 'Уфа', 'Пермь', 'Ростов', 'Воронеж', 'Тюмень', 'Краснодар', 'Челябинск'];
-const RND_SUMS = ['100 000 ₽', '100 000 ₽', '100 000 ₽', '50 000 ₽', '100 000 ₽'];
-const rnd = (a: string[]) => a[Math.floor(Math.random() * a.length)];
+const RND_NAMES = ['Алексей М.','Марина К.','Дмитрий В.','Ольга С.','Игорь П.','Светлана Р.','Никита Т.','Елена Ф.','Артём Б.','Кристина Л.','Роман Д.','Анастасия Ж.','Владимир Г.','Татьяна Н.','Максим О.','Юлия В.','Павел Н.','Валерия С.','Денис Х.','Евгения Б.','Андрей Ф.','Наталья К.','Виктор Р.','Карина О.','Тимур А.','Полина Г.','Вадим Ш.','Ирина Д.','Константин М.','Ксения П.'];
+const RND_CITIES = ['Москва','Казань','СПб','Новосибирск','Екатеринбург','Сочи','Самара','Уфа','Пермь','Ростов','Воронеж','Тюмень','Краснодар','Челябинск','Омск','Красноярск','Саратов','Нижний Новгород','Ярославль','Иркутск'];
+const RND_SUMS = ['100 000 ₽','100 000 ₽','100 000 ₽','100 000 ₽','1 000 ₽','500 ₽','300 ₽','100 000 ₽'];
+const rnd = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)];
 
 
 
 const BOTS = [
-  { name: 'Наташа', avatar: '👩', color: '#FF1FB3' },
-  { name: 'Дима', avatar: '🧔', color: '#7B2FF7' },
-  { name: 'Алина', avatar: '👩‍🦰', color: '#A020F0' },
-  { name: 'Серёга', avatar: '👨‍🦱', color: '#6366f1' },
-  { name: 'Оля', avatar: '👱‍♀️', color: '#ec4899' },
-  { name: 'Макс', avatar: '🧑', color: '#8b5cf6' },
+  { name: 'Наташа',    avatar: '👩',     color: '#FF1FB3' },
+  { name: 'Дима',      avatar: '🧔',     color: '#7B2FF7' },
+  { name: 'Алина',     avatar: '👩‍🦰',  color: '#A020F0' },
+  { name: 'Серёга',    avatar: '👨‍🦱',  color: '#6366f1' },
+  { name: 'Оля',       avatar: '👱‍♀️', color: '#ec4899' },
+  { name: 'Макс',      avatar: '🧑',     color: '#8b5cf6' },
+  { name: 'Лена',      avatar: '🙍‍♀️', color: '#f472b6' },
+  { name: 'Антон',     avatar: '🧑‍💻',  color: '#818cf8' },
+  { name: 'Кристина',  avatar: '👩‍🦱',  color: '#c084fc' },
+  { name: 'Влад',      avatar: '🧑‍🦲',  color: '#a78bfa' },
+  { name: 'Таня',      avatar: '🧕',     color: '#f9a8d4' },
+  { name: 'Паша',      avatar: '🧑‍🦰',  color: '#7c3aed' },
 ];
 
 type ChatMsg = { bot: number; text: string; time: string };
@@ -47,37 +53,137 @@ const nowTime = () => {
   return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
 };
 
-const LIVE_SCRIPT: Array<{ bot: number; text: string; delay: number }> = [
-  { bot: 1, text: 'народ, у кого то уже получилось вывести?', delay: 0 },
-  { bot: 0, text: 'Дима, да!! мне вчера пришло всё. ждала 2 часа после оплаты комиссии и деньги на карте 🥹', delay: 4000 },
-  { bot: 2, text: 'серьёзно?? а сколько комиссия была', delay: 7500 },
-  { bot: 0, text: 'там небольшая, 3500 вроде. зато 100 тысяч получила)', delay: 10000 },
-  { bot: 3, text: 'ого, я вот как раз кручу, первые две не вышло 😭', delay: 14000 },
-  { bot: 4, text: 'Серёга не расстраивайся, на третьей точно выйдет, у меня так же было', delay: 17500 },
-  { bot: 1, text: 'подождите, это что реально работает?! думал маркетинг просто', delay: 21000 },
-  { bot: 0, text: 'Дима, я тоже думала! потом подруга вывела и я попробовала', delay: 24500 },
-  { bot: 5, text: 'выиграл!! 🎉🎉🎉 третья попытка и 100к выпало', delay: 29000 },
-  { bot: 2, text: 'МАКС!!!! поздравляю 🔥🔥', delay: 31000 },
-  { bot: 4, text: 'ааа красавчик! быстрее менеджеру пиши пока акция идёт', delay: 33500 },
-  { bot: 5, text: 'уже написал, Екатерина ответила моментально', delay: 36500 },
-  { bot: 3, text: 'вот это да... пойду покручу ещё раз наверное', delay: 40000 },
-  { bot: 1, text: 'пишите как получите деньги! очень интересно)', delay: 43000 },
-  { bot: 0, text: 'ребят главное не тяните с оплатой налога, у меня знакомая затянула и акция закончилась', delay: 48000 },
-  { bot: 2, text: 'да я уже плачу', delay: 51000 },
-  { bot: 4, text: '👆 всё правда, проверено лично. удачи всем!', delay: 55000 },
+// Огромный пул фраз, разбитых по темам — генератор будет комбинировать
+const POOL_QUESTIONS = [
+  'народ, кто уже выводил деньги?',
+  'ребят подскажите — это реально работает?',
+  'у меня первые две попытки 0, норм? 😅',
+  'сколько ждать после оплаты комиссии?',
+  'а Екатерина быстро отвечает?',
+  'можно на сбер вывести или только по номеру?',
+  'первый раз тут, что делать после выигрыша?',
+  'а налог точно надо платить до вывода?',
+  'у кого нибудь третья попытка зашла сегодня?',
+  'как давно этот розыгрыш работает?',
+  'сколько всего можно выиграть максимум?',
+  'а если не третья попытка то вообще ничего нельзя выиграть?',
+  'кто нибудь получал 100 000 на этой неделе?',
+  'а откуда берутся деньги для выплат?',
+];
+const POOL_WIN_EXCLAIM = [
+  'ВЫИГРАЛ 100 000!! 🎉🎉🎉 третья попытка и оно выпало!!!',
+  'ааааа третья крутка — 100 тыщ!!! не верю своим глазам 😱',
+  'ВЫШЛО!! 100к на третьей, пишу менеджеру прямо сейчас',
+  'ребята я выиграл!!! 100 000 рублей блин это нереально',
+  'третья попытка — джекпот!! 🏆 спасибо вам всем за советы',
+  'выиграла наконец!! ждала этого момента 🥹🥹',
+];
+const POOL_CONGRATS = [
+  '🎉🎉 поздравляю!! скорее пиши менеджеру',
+  'ааа красавчик!! быстрее к Екатерине',
+  'вот это да!! удачи с выводом, всё будет ок',
+  'ура!! я так и знала что выйдет 🔥',
+  'поздравляю!! пиши быстрее пока акция идёт',
+  'вот это везение!! рада за тебя 🙌',
+  'ещё один победитель! 💜 ждём когда придут деньги',
+];
+const POOL_CONFIRM = [
+  'да, мне тоже пришло вчера. всё честно 👍',
+  'я вывела на прошлой неделе, реально работает',
+  'подтверждаю — деньги приходят, просто надо подождать немного',
+  'я уже потратила часть своих 100к 😄',
+  'у меня брат тоже вывел, всё пришло без проблем',
+  'проверено лично — работает. главное не тянуть с оплатой',
+  'мне пришло через 1.5 часа после оплаты комиссии',
+  'всё пришло, ждала часа 2. Екатерина очень помогла',
+];
+const POOL_ADVICE = [
+  'главное не тяните с налогом, акция ограничена по времени ⏳',
+  'Екатерина отвечает очень быстро, не бойтесь писать',
+  'на третьей попытке всегда выпадает, так и есть 💯',
+  'комиссия небольшая, зато 100 000 получаешь — явно выгодно',
+  'я сначала боялась но подруга уговорила. не зря!',
+  'пишите менеджеру сразу как выиграете, чтобы не потерять выигрыш',
+  'тут всё официально, налог — это просто банковская операция',
+  'не сомневайтесь, тут уже тысячи людей получили деньги',
+];
+const POOL_PROCESS = [
+  'кручу первый раз, немного страшновато 😅',
+  'первая попытка — ноль. ладно, ещё две есть)',
+  'вторая попытка тоже мимо. ну окей, третья решающая!',
+  'жду пока менеджер ответит, написала 5 минут назад',
+  'оплатила комиссию, теперь жду перевод 🤞',
+  'написала Екатерине, говорит 1-2 часа ждать',
+  'нервничаю немного, жду деньги уже час',
+  'пришло!! 100 000 на карте, не верю!! 😭🎉',
+];
+const POOL_SMALL = [
+  'хм, у меня 500 рублей выпало на первой попытке',
+  'получил 300₽ на второй, но главное — третья впереди!',
+  '1000 рублей выпало, уже приятно) жду третью',
+];
+const POOL_CHATTER = [
+  'ладно пойду ещё разок попробую',
+  'всем удачи!! 🍀',
+  'спасибо за инфу ребят',
+  '👍',
+  'окей понял, спасибо)',
+  'ясно, буду ждать тогда',
+  'супер, спасибо большое!',
+  'это реально круто что такой розыгрыш есть',
+  'надо подругам рассказать про это',
+  'мда, третья попытка просто огонь 🔥',
 ];
 
+// Генератор бесконечного уникального потока сообщений
+const makeMsgStream = (): Array<{ bot: number; text: string; interval: number }> => {
+  const all: Array<{ bot: number; text: string; interval: number }> = [];
+  const pools = [
+    ...POOL_QUESTIONS.map(t => ({ pool: 'q', text: t })),
+    ...POOL_CONFIRM.map(t => ({ pool: 'c', text: t })),
+    ...POOL_ADVICE.map(t => ({ pool: 'a', text: t })),
+    ...POOL_PROCESS.map(t => ({ pool: 'p', text: t })),
+    ...POOL_CHATTER.map(t => ({ pool: 'ch', text: t })),
+    ...POOL_SMALL.map(t => ({ pool: 's', text: t })),
+  ];
+  // Перемешиваем
+  const shuffled = [...pools].sort(() => Math.random() - 0.5);
+  // Вставляем победные моменты каждые ~8 сообщений
+  let winIdx = 0;
+  shuffled.forEach((item, i) => {
+    all.push({ bot: Math.floor(Math.random() * BOTS.length), text: item.text, interval: 1800 + Math.random() * 3200 });
+    if (i > 0 && i % 8 === 0 && winIdx < POOL_WIN_EXCLAIM.length) {
+      const winBot = Math.floor(Math.random() * BOTS.length);
+      all.push({ bot: winBot, text: POOL_WIN_EXCLAIM[winIdx], interval: 2500 });
+      const congBot = Math.floor(Math.random() * BOTS.length);
+      all.push({ bot: congBot, text: POOL_CONGRATS[winIdx % POOL_CONGRATS.length], interval: 2000 });
+      winIdx++;
+    }
+  });
+  return all;
+};
+
 const BOT_REPLIES_TO_USER: Array<{ bot: number; text: string }> = [
-  { bot: 0, text: 'о, новенький! крути, не пожалеешь 😊' },
-  { bot: 1, text: 'привет! тут реально всё честно, я уже вывел' },
-  { bot: 4, text: 'добро пожаловать 🙌 на третьей попытке всё выйдет' },
-  { bot: 2, text: 'не сомневайся, пиши менеджеру сразу как выиграешь' },
-  { bot: 3, text: 'у меня тоже сначала не верилось)) теперь жду деньги' },
-  { bot: 5, text: 'крути скорее, акция ограничена!' },
-  { bot: 0, text: 'Екатерина очень быстро отвечает, всё объяснит' },
-  { bot: 1, text: 'ха, и я так думал сначала. потом сам убедился 😄' },
-  { bot: 4, text: 'главное комиссию оплати сразу, потом быстрее придёт' },
-  { bot: 2, text: 'тут весь чат уже вывел почти, реально работает 💯' },
+  { bot: 0,  text: 'о, новенький! крути, не пожалеешь 😊' },
+  { bot: 1,  text: 'привет! тут реально всё честно, я уже вывел' },
+  { bot: 4,  text: 'добро пожаловать 🙌 на третьей попытке всё выйдет' },
+  { bot: 2,  text: 'не сомневайся, пиши менеджеру сразу как выиграешь' },
+  { bot: 3,  text: 'у меня тоже сначала не верилось)) теперь жду деньги' },
+  { bot: 5,  text: 'крути скорее, акция ограничена по времени!' },
+  { bot: 0,  text: 'Екатерина очень быстро отвечает, всё объяснит 💜' },
+  { bot: 1,  text: 'ха, и я так думал сначала. потом сам убедился 😄' },
+  { bot: 4,  text: 'главное комиссию оплати сразу, потом быстрее придёт' },
+  { bot: 2,  text: 'тут весь чат уже почти вывел, реально работает 💯' },
+  { bot: 6,  text: 'ой, я тоже только зашла! вместе будем ждать выигрыша)' },
+  { bot: 7,  text: 'привет! третья попытка — твоя, удачи 🍀' },
+  { bot: 8,  text: 'не бойся, тут всё официально и безопасно' },
+  { bot: 9,  text: 'я получил на прошлой неделе, всё пришло чётко' },
+  { bot: 10, text: 'девочки тут говорят что реально платят, верю им)' },
+  { bot: 11, text: 'крути! я вот только что написал Екатерине, жду ответа' },
+  { bot: 3,  text: 'мне тоже сначала казалось странным платить комиссию, но потом понял — это норм' },
+  { bot: 5,  text: 'главное не тяни! акция не вечная' },
+  { bot: 0,  text: 'успехов! пиши как выиграешь, порадуемся вместе 🎉' },
+  { bot: 1,  text: 'у меня подруга тоже выиграла, говорит что всё честно' },
 ];
 
 const REVIEWS = [
@@ -154,60 +260,57 @@ const Index = () => {
   const [chat, setChat] = useState<ChatMsg[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [typing, setTyping] = useState<number | null>(null);
+  const [onlineCount, setOnlineCount] = useState(4871);
   const chatRef = useRef<HTMLDivElement>(null);
-  const scriptIndexRef = useRef(0);
+  const streamRef  = useRef<Array<{ bot: number; text: string; interval: number }>>([]);
+  const streamIdxRef = useRef(0);
+  const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chat, typing]);
 
+  // Лента выплат — только реальные суммы
   useEffect(() => {
     const t = setInterval(() => {
       setFeed((f) => [
         { name: rnd(RND_NAMES), sum: rnd(RND_SUMS), city: rnd(RND_CITIES), id: Date.now() },
         ...f,
-      ].slice(0, 12));
-    }, 3500);
+      ].slice(0, 14));
+    }, 2800);
     return () => clearInterval(t);
   }, []);
 
+  // Счётчик онлайн колышется как живой
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    LIVE_SCRIPT.forEach((msg) => {
-      const t = setTimeout(() => {
+    const t = setInterval(() => {
+      setOnlineCount(c => c + Math.floor(Math.random() * 7) - 3);
+    }, 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Бесконечный поток уникальных сообщений без повторов
+  useEffect(() => {
+    streamRef.current = makeMsgStream();
+    const scheduleNext = () => {
+      if (streamIdxRef.current >= streamRef.current.length) {
+        // Генерируем новую партию
+        streamRef.current = makeMsgStream();
+        streamIdxRef.current = 0;
+      }
+      const msg = streamRef.current[streamIdxRef.current];
+      streamIdxRef.current++;
+      timerRef.current = setTimeout(() => {
         setTyping(msg.bot);
-        const t2 = setTimeout(() => {
+        timerRef.current = setTimeout(() => {
           setTyping(null);
-          setChat((c) => [...c, { bot: msg.bot, text: msg.text, time: nowTime() }]);
-          scriptIndexRef.current += 1;
-        }, 1200 + msg.text.length * 25);
-        timers.push(t2);
-      }, msg.delay);
-      timers.push(t);
-    });
-    const loopDelay = LIVE_SCRIPT[LIVE_SCRIPT.length - 1].delay + 10000;
-    const loop = setInterval(() => {
-      const filler = [
-        { bot: 1, text: 'ну как у всех дела с выводом?', delay: 0 },
-        { bot: 0, text: 'всё окей, уже потратила часть 😄', delay: 3500 },
-        { bot: 3, text: 'жду перевод, должны сегодня прислать', delay: 7000 },
-        { bot: 5, text: 'а я уже второй раз кручу колесо)', delay: 11000 },
-        { bot: 4, text: 'удачи! главное не забудь комиссию оплатить сразу', delay: 14000 },
-        { bot: 2, text: 'тут реально щедрый розыгрыш, подруга тоже вывела вчера', delay: 18000 },
-      ];
-      filler.forEach((msg) => {
-        const t = setTimeout(() => {
-          setTyping(msg.bot);
-          const t2 = setTimeout(() => {
-            setTyping(null);
-            setChat((c) => [...c, { bot: msg.bot, text: msg.text, time: nowTime() }].slice(-40));
-          }, 1100 + msg.text.length * 22);
-          timers.push(t2);
-        }, msg.delay);
-        timers.push(t);
-      });
-    }, loopDelay);
-    return () => { timers.forEach(clearTimeout); clearInterval(loop); };
+          setChat(c => [...c, { bot: msg.bot, text: msg.text, time: nowTime() }].slice(-60));
+          scheduleNext();
+        }, 900 + msg.text.length * 28);
+      }, msg.interval);
+    };
+    scheduleNext();
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, []);
 
   const spin = () => {
@@ -387,7 +490,7 @@ const Index = () => {
               <span className="text-lg font-extrabold">Живой чат</span>
               <span className="ml-auto flex items-center gap-1 text-xs text-green-400">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                {1241 + Math.floor(chat.length * 0.3)} онлайн
+                {onlineCount.toLocaleString('ru-RU')} онлайн
               </span>
             </div>
             <div ref={chatRef} className="no-scrollbar mb-3 h-72 space-y-2.5 overflow-y-auto pr-1">
